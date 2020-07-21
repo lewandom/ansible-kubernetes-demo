@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: "{{ wordpress_name }}-data"
+  labels:
+    app: "{{ wordpress_name }}"
+spec:
+  capacity:
+    storage: "{{ wordpress_storage_request }}"
+  accessModes:
+  - ReadWriteMany
+  hostPath:
+    path: "/tmp/data/{{ wordpress_name }}"
+  persistentVolumeReclaimPolicy: Recycle
+  storageClassName: "{{ wordpress_storage_class }}"

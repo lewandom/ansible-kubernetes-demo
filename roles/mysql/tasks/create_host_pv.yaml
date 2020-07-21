@@ -1,0 +1,8 @@
+- name: Create MySQL host persistent volume
+  command: kubectl apply -f -
+  args:
+    stdin: "{{ lookup('template', 'mysql_host_pv.yaml.j2') }}"
+  register: mysql_create_host_pv_result
+  changed_when: >-
+    mysql_create_host_pv_result.stdout_lines
+      | reject('match', '^.* unchanged$') | list | length > 0

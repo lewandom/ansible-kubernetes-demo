@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: "{{ mysql_name }}"
+  labels:
+    app: "{{ mysql_name }}"
+spec:
+  serviceName: "{{ mysql_name }}"
+  selector:
+    matchLabels:
+      app: "{{ mysql_name }}"
+  template:
+    metadata:
+      labels:
+        app: "{{ mysql_name }}"
+    spec:
+      containers:
+      - name: mysql-server
+        image: "{{ mysql_image }}"
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: "{{ mysql_name }}-root-pass"
+              key: root_password
+        ports:
+        - name: mysql-server
+          containerPort: 3306
+        volumeMounts:
+        - name: mysql-data
+          mountPath: /var/lib/mysql
+  volumeClaimTemplates:
+  - metadata:
+      name: mysql-data
+    spec:
+      accessModes:
+      - ReadWriteOnce
+      storageClassName: "{{ mysql_storage_class }}"
+      resources:
+        requests:
+          storage: "{{ mysql_storage_request }}"

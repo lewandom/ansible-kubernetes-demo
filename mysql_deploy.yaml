@@ -1,0 +1,14 @@
+- name: Deploy MySQL server
+  hosts: deployment_coordinator
+  gather_facts: no
+
+  tasks:
+  - name: Deploy MySQL server
+    import_role:
+      name: mysql
+      tasks_from: create_host_pv
+
+  - name: Deploy MySQL server
+    import_role:
+      name: mysql
+      tasks_from: deploy

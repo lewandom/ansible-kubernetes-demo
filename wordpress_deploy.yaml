@@ -1,0 +1,22 @@
+- name: Deploy Wordpress
+  hosts: deployment_coordinator
+  gather_facts: no
+  vars:
+    mysql_name: wordpress-mysql
+  pre_tasks:
+  - name: Create host persistent volumes
+    include_role:
+      name: "{{ item }}"
+      tasks_from:  create_host_pv
+    loop:
+    - mysql
+    - wordpress
+  - name: Deploy MySQL database
+    import_role:
+      name: mysql
+      tasks_from: deploy
+  tasks:
+  - name: Deploy Wordpress
+    import_role:
+      name: wordpress
+      tasks_from: deploy

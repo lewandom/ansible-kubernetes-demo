@@ -1,0 +1,9 @@
+- name: Wait for Wordpress service to roll out
+  command: >-
+    kubectl rollout status deploy -w=false {{ wordpress_name | quote }}
+  register: wordpress_rollout_status
+  until: >-
+    wordpress_rollout_status.stdout | regex_search('successfully rolled out')
+  retries: "{{ wordpress_rollout_retries|int }}"
+  delay: "{{ wordpress_rollout_delay|int }}"
+  changed_when: no

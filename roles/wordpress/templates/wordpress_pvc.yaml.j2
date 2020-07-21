@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: "{{ wordpress_name }}-data"
+  labels:
+    app: "{{ wordpress_name }}"
+spec:
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: "{{ wordpress_storage_request }}"
+  selector:
+    matchLabels:
+      app: "{{ wordpress_name }}"
+  storageClassName: "{{ wordpress_storage_class }}"

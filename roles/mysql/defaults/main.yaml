@@ -1,0 +1,8 @@
+mysql_name: mysql
+mysql_image_name: mysql
+mysql_image_version: latest
+mysql_image: "{{ mysql_image_name }}:{{ mysql_image_version }}"
+mysql_storage_class: local-storage
+mysql_storage_request: 10Gi
+mysql_rollout_retries: 10
+mysql_rollout_delay: 5

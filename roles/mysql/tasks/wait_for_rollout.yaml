@@ -1,0 +1,8 @@
+- name: Wait for MySQL database to roll out
+  command: >-
+    kubectl rollout status statefulset {{ mysql_name | quote }} -w=false
+  register: mysql_rollout_status
+  until: mysql_rollout_status.stdout | regex_search('roll out complete')
+  retries: "{{ mysql_rollout_retries|int }}"
+  delay: "{{ mysql_rollout_delay|int }}"
+  changed_when: no
